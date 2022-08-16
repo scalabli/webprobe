@@ -16,7 +16,7 @@
 #
 #  Author: Mauro Soria
 
-class BaseReport(object):
+class BaseReport:
     def save(self):
         raise NotImplementedError
 
@@ -25,7 +25,11 @@ class BaseReport(object):
 
 
 class FileBaseReport(BaseReport):
-    def __init__(self, output_file_name, entries=[]):
+    def __init__(
+            self, 
+            output_file_name, 
+            entries=[]
+            ):
         self.output = output_file_name
         self.entries = entries
         self.header_written = False
