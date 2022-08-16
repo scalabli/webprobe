@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: webprobe
+Version: 2022.1
+Summary: Nifty and sophisticated web scanner
+Home-page: https://github.com/scalabli
+Author: Gerrishon Sirere
+Author-email: scalabli@proton.me
+Maintainer: Scalabli.
+Maintainer-email: scalabli@proton.me
+License: MIT
+Project-URL: Donate, https://ko-fi.com/scalabli
+Project-URL: Documentation, https://github.com/scalabli/webprobe
+Project-URL: Changes, https://github.com/scalabli/webprobe
+Project-URL: Source Code, https://github.com/scalabli/webprobe
+Project-URL: Issue Tracker, https://github.com/scalabli/webprobe/issues/
+Project-URL: Twitter, https://twitter.com/scalabli
+Project-URL: Chat, https://gitter.im/scalabli
+Keywords: infosec,bug bount,pentesting,security
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# webprobe
+Nifty and sophisticated web path scanner
+
+A sophisticated web path scanner designed for the most descerning bug bounty hunters.
+
+
+This CLI brute forces directories and files in webservers.

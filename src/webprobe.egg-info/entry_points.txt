@@ -1,0 +1,2 @@
+[console_scripts]
+webprobe = webprobe._webprobe:Program
