@@ -10,6 +10,11 @@ src/webprobe.egg-info/dependency_links.txt
 src/webprobe.egg-info/entry_points.txt
 src/webprobe.egg-info/requires.txt
 src/webprobe.egg-info/top_level.txt
+src/webprobe/db/400_blacklist.txt
+src/webprobe/db/403_blacklist.txt
+src/webprobe/db/500_blacklist.txt
+src/webprobe/db/dicc.txt
+src/webprobe/db/user-agents.txt
 src/webprobe/lib/__init__.py
 src/webprobe/lib/connection/__init__.py
 src/webprobe/lib/connection/request_exception.py

@@ -27,4 +27,9 @@ setup(
         "ntlm_auth>=1.5.0",
         "pyparsing>=2.4.7",
     ],
+
+    package_data={
+
+        # If any package contains *.txt files, include them:
+        "webprobe": ["db/*.txt"]},
 )

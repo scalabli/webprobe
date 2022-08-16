@@ -22,6 +22,10 @@ import time
 from threading import Lock
 from urllib.parse import urlparse
 
+from quo import container
+from quo.layout import VSplit, Window
+from quo.widget import Label, Frame
+
 from webprobe.lib.utils.size import human_size, get_terminal_size
 from .colors import ColorOutput
 
@@ -223,20 +227,40 @@ class CLIOutput:
         self.print_header(config)
 
     def set_target(self, target, scheme):
+        from quo import container
+        from quo.layout import VSplit, Window
+        from quo.widget import Label, Frame
         if not target.startswith(("http://", "https://")) and "://" not in target:
             target = "{0}://{1}".format(scheme, target)
 
         self.target = target
-
         self.new_line()
-        self.print_header({"Target": target})
+
+        content = VSplit([
+            Label("  Target: ", style="fg:black bg:blue"),
+            Window(width=1, char="|"), # Vertical line in the middle.
+            Label(f"  {target}", style="fg:red bg:green")],
+            padding_char="|")
+        container(content)
+        #self.print_header({"Target": target})
         self.new_line()
 
     def output_file(self, target):
+        content = Frame(
+                Label(" Output File: {0} ".format(target), style="fg:black bg:blue")
+                )
+        container(content)
         self.new_line("\nOutput File: {0}".format(target))
 
     def error_log_file(self, target):
-        self.new_line("\nError Log: {0}".format(target))
+        from quo.widget import Frame
+
+        content = Frame(
+                Label("Error log: {0} ".format(target), style="fg:black bg:blue")
+                )
+                
+        container(content)
+       # self.new_line("\nError Log: {0}".format(target))
 
     def debug(self, info):
         with self.mutex:
