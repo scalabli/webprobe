@@ -18,14 +18,33 @@ This CLI brute forces directories and files in webservers.
 
 Some common examples on how to use webprobe.
 
-:NOTE: If you need to see a list of all options, just use the **-h** argument.                                                                    ### Simple usage                                                ```
+:NOTE: If you need to see a list of all options, just use the **-h** argument.
+
+### Simple usage
+
+```python
+
 webprobe -u https://target.com
-```                                                                                                                             ```
-webprobe -e php,html,js -u https://target.com     
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://target.com
+
+```
+
+```
+webprobe -e php,html,js -u https://target.com -w /path/t
+o/wordlist
+
+```
 
 
 
-## License📑 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## License📑
+
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This software is licensed under the `MIT License`. See the [License](https://github.com/scalabli/webprobe/blob/master/LICENSE) file in the top distribution directory for the full license text.
 
