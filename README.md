@@ -1,3 +1,11 @@
+[![Downloads](https://pepy.tech/badge/webprobe)](https://pepy.tech/project/webprobe)
+[![PyPI version](https://badge.fury.io/py/webprobe.svg)](https://badge.fury.io/py/webprobe)
+[![Wheel](https://img.shields.io/pypi/wheel/webprobe.svg)](https://pypi.com/project/webprobe)
+[![licence](https://img.shields.io/pypi/l/webprobe.svg)](https://opensource.org/licenses/MIT)
+[![Twitter Follow](https://img.shields.io/twitter/follow/gerrishon_s.svg?style=social)](https://twitter.com/gerrishon_s)
+
+[![Logo](https://raw.githubusercontent.com/scalabli/webprobe/main/images/webprobe.png)](https://github.com/scalabli/webprobe)
+
 # webprobe
 Nifty and sophisticated web path scanner
 
@@ -87,6 +95,94 @@ However, the speed still depends on the response time of the server.
 webprobe -e php,htm,js,bak,zip,tgz,txt -u https://example.com -t 20
 
 ```
+
+## Filters
+Use **-i | --include-status** and **-x | --exclude-status** flags to select allowed and not allowed response status-codes
+
+For more advanced filters: **--exclude-sizes**, **--exclude-texts**, **--exclude-regexps**, **--exclude-redirects** and **--exclude-response**
+
+```python
+
+webprobe  -e php,html,js -u https://example.com --exclude-sizes 1B,243KB
+
+```                                                      
+```python
+
+webprobe -e php,html,js -u https://example.com --exclude-texts "403 Forbidden"
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://example.com --exclude-regexps "^Error$"
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://example.com --exclude-redirects "https://(.*).okta.com/*"
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://example.com --exclude-response /error.html
+
+```
+
+## Scan sub-directories
+- You can scan a list of sub-directories with **--subdirs** flag.
+
+```python
+
+webprobe -e php,html,js -u https://example.com --subdirs /,admin/,folder/
+```
+## Proxies
+- Webprobe supports both SOCKS and HTTP proxy. You can enlist a proxy server or a list of proxy servers from a file.
+
+```python
+
+webprobe -e php,html,js -u https://example.com --proxy 127.0.0.1:8080
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://example.com --proxy socks5://10.10.0.1:8080
+
+```
+
+```python
+
+webprobe -e php,html,js -u https://example.com --proxylist proxyservers.txt
+
+```
+## More example commands
+
+```python
+
+cat urls.txt | python3 webprobe --stdin
+
+```
+
+```python
+
+webprobe -u https://example.com --max-time 360
+
+```
+
+```python
+
+webprobe -u https://example.com --auth admin:pass --auth-type basic
+
+```
+
+```python
+
+webprobe -u https://example.com --header-list rate-limit-bypasses.txt
+
+```
+
 ## Reports
 Supported report formats are: **simple**, **plain**, **json**, **xml**, **md**, **csv**,  **html**, **sqlite**
 :NOTE: We will be adding **yaml** soon
