@@ -10,7 +10,7 @@ setup(
         "cryptography>=2.8",
         "PySocks>=1.6.8",
         "cffi>=1.14.0",
-        "quo>=2022.6.1",
+        "quo>=2022.8",
         "Jinja2>=3.0.0",
         "certifi>=2017.4.17",
         "urllib3>=1.21.1",
