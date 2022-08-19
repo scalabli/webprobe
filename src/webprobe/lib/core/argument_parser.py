@@ -419,7 +419,7 @@ class ArgumentParser:
                 usage,
                 version="webprobe "+__version__,
                 epilog="""
-                You can change the webprobe default configurations (default extensions, timeout, wordlist location, ...) by editing the "/etc/webprobe/default.conf" file. More information at https://github.com/scalabli/webprobe."""
+                You can change the webprobe default configurations (default extensions, timeout, wordlist location, ...) by editing `webprobe/config/default.conf` file found where the package is installed. More information at https://github.com/scalabli/webprobe."""
                 )
 
         # Mandatory arguments
