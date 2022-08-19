@@ -19,14 +19,14 @@ This CLI brute forces directories and files in webservers.
                                                 
 **Requirement: python 3.8 or higher**
 
-- Install with PyPi: `pip3 install webprobe`
+- Install with PyPi: `pip install webprobe`
 
 
 ### How to use
 
 Some common examples on how to use webprobe.
 
-:NOTE: If you need to see a list of all options, just use the **-h** argument
+:bulb: If you need to see a list of all options, just use the `-h | --help` argument.
 
 To use multiple wordlists, you can separate your wordlists with commas. Example: `wordlist1.txt,wordlist2.txt`
 
