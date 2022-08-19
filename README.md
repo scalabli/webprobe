@@ -189,12 +189,10 @@ Supported report formats are: **simple**, **plain**, **json**, **xml**, **md**, 
 
 ```python
  webprobe -e php -l URLs.txt --format plain -o report.txt
-
 ```
 
 ```python
  webprobe -e php -u https://example.com --format html -o example.json
-
 ```
 
 ## License📑
