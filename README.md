@@ -42,7 +42,66 @@ o/wordlist
 
 ```
 
+## Pausing progress
 
+You can pause the scanning progress with CTRL+C  from here, you can save the progress (and continue later), skip the current target, or skip the current sub-directory.
+
+## Recursion
+- Brutforcing recursively can be achieved using `-r` or `--recursive` flag.
+
+For example, if webprobe finds `admin/`, it will brute-force `admin/* ` (`*` is where it brute forces).
+
+```python
+
+webprobe -e php,html,js -u https://example.com -r
+
+```
+
+- You can set the max recursion depth with `--recursion-depth` and status codes to recurse with `--recursion-status`
+
+```python
+
+webprobe -e php,html,js -u https://example.com -r --recursion-depth 3 --recursion-status 200-39
+
+```
+- You can brute force recursively all found paths, not just paths end with `/` using `--force-recursive` flag.
+
+- You can recursively brute-force all depths of a path (`a/b/c` => add `a/`, `a/b/`) using `--deep-recursive` flag.
+
+- If there are sub-directories that you do not want to brute-force recursively use `--exclude-subdirs` flag.
+
+```python
+
+webprobe -e php,html,js -u https://example.com -r --exclude-subdirs image/,media/,css/
+
+```
+
+## Threads
+Thread number (`-t | --threads`) reflects the number of separated brute force processes. The bigger the thread number, the faster webprobe runs. By default, the number of threads is 25, but you can increase it if you want to speed up the progress.
+
+However, the speed still depends on the response time of the server.
+:NOTE: keep the threads number within a reasonable range because it can cause DoS (Denial of Service).
+
+```python
+
+webprobe -e php,htm,js,bak,zip,tgz,txt -u https://example.com -t 20
+
+```
+## Reports
+Supported report formats are: **simple**, **plain**, **json**, **xml**, **md**, **csv**,  **html**, **sqlite**
+:NOTE: We will be adding **yaml** soon
+
+```python
+
+webprobe -e php -l URLs.txt --format plain -o report.txt
+
+```
+
+```python
+
+webprobe -e php -u https://example.com --format html -o target.json
+
+```
 
 ## License📑
 

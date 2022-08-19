@@ -26,6 +26,12 @@ import threading
 from urllib.parse import urljoin, urlparse
 from queue import Queue
 
+from quo import print as print_
+from quo import container
+from quo.console.console import Console
+from quo.layout import FormattedTextControl, Window
+from quo.text.html import Text
+
 from webprobe.lib.connection.requester import Requester
 from webprobe.lib.connection.request_exception import RequestException
 from webprobe.lib.core.dictionary import Dictionary
@@ -37,10 +43,13 @@ from webprobe.lib.utils.fmt import clean_filename
 from webprobe.lib.utils.size import human_size
 from webprobe.lib.utils.timer import Timer
 
+from webprobe import __version__
+
+
+console = Console()
 
 class SkipTargetInterrupt(Exception):
     pass
-
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 4
@@ -50,6 +59,19 @@ VERSION = {
     "MINOR_VERSION": MINOR_VERSION,
     "REVISION": REVISION,
 }
+
+
+banner = ("""<b>
+
+<aquamarine>╱</aquamarine>╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╭╮
+╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱┃┃
+╭╮╭╮╭┳━━┫╰━┳━━┳━┳━━┫╰━┳━━╮
+┃╰╯╰╯┃┃━┫╭╮┃╭╮┃╭┫╭╮┃╭╮┃┃━┫
+╰╮╭╮╭┫┃━┫╰╯┃╰╯┃┃┃╰╯┃╰╯┃┃━┫
+<skyblue>╱</skyblue>╰╯╰╯╰━━┻━━┫╭━┻╯╰━━┻━━┻━━╯
+╱╱╱╱╱╱╱╱╱╱╱┃┃
+╱╱╱╱╱╱╱╱╱╱╱<red>╰</red><seagreen>╯</seagreen>      {0}
+</b>""".format(__version__))
 
 
 class EmptyReportManager:
@@ -81,20 +103,19 @@ class EmptyTimer:
 
 class Controller:
     def __init__(
-            self, 
+            self,
             script_path,
             arguments,
             output
             ):
+
         global VERSION
-        print("dehehewh")
 
+        content = Window(
+                    FormattedTextControl(Text(f"{banner}")),wrap_lines=True)
 
-     #   program_banner = (
-     #       open(FileUtils.build_path(script_path, "banner.txt"))
-        #    .read()
-       #     .format(**VERSION)
-      #  )
+        #using the return statement in this context doesnt return the desired output
+        container(content)
 
         self.directories = Queue()
         self.script_path = script_path
@@ -198,7 +219,6 @@ class Controller:
         self.timer = EmptyTimer()
 
         #self.output.header(program_banner)
-        print("yyyy")
         self.print_config()
 
         if arguments.use_random_agents:
@@ -296,15 +316,17 @@ class Controller:
                     continue
 
         except KeyboardInterrupt:
-            self.output.error("\nCanceled by the user")
+            print("\n")
+            console.bar("Operation canceled by user")
             exit(0)
 
         finally:
             self.error_log.close()
 
-        self.output.warning("\nTask Completed")
+        print("\n")
+        console.bar("Task Completed🎉🎊")
 
-    # Print dirsearch metadata (threads, HTTP method, ...)
+    # Print webprobe  metadata (threads, HTTP method, ...)
     def print_config(self):
         self.output.config(
             ', '.join(self.extensions),
@@ -600,15 +622,14 @@ class Controller:
             self.current_job += 1
             self.index = 0
             self.current_directory = self.directories.get()
-            self.output.warning(
-                "[{1}] Starting: {0}".format(
-                    self.current_directory, time.strftime("%H:%M:%S")
-                )
-            )
-            self.fuzzer.requester.base_path = self.output.base_path = self.base_path + self.current_directory
-            self.fuzzer.start()
-            self.process_paths()
-
+            with console.spin():
+                time.sleep(2)
+                content = Window(FormattedTextControl(Text("<b><red>» </red><cyan>[{1}]</cyan></b><i>Start probing: {0}</i>".format(self.current_directory, time.strftime("%H:%M:%S")))))
+                container(content)
+    
+                self.fuzzer.requester.base_path = self.output.base_path = self.base_path + self.current_directory
+                self.fuzzer.start()
+                self.process_paths()
         self.report.completed = True
 
     # Add directory to the recursion queue

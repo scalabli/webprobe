@@ -26,12 +26,6 @@ import threading
 from urllib.parse import urljoin, urlparse
 from queue import Queue
 
-from quo import print as print_
-from quo import container
-from quo.console.console import Console
-from quo.layout import FormattedTextControl, Window
-from quo.text.html import Text
-
 from webprobe.lib.connection.requester import Requester
 from webprobe.lib.connection.request_exception import RequestException
 from webprobe.lib.core.dictionary import Dictionary
@@ -43,13 +37,10 @@ from webprobe.lib.utils.fmt import clean_filename
 from webprobe.lib.utils.size import human_size
 from webprobe.lib.utils.timer import Timer
 
-from webprobe import __version__
-
-
-console = Console()
 
 class SkipTargetInterrupt(Exception):
     pass
+
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 4
@@ -61,17 +52,18 @@ VERSION = {
 }
 
 
-banner = ("""<b>
+banner = ("""
 
-<aquamarine>╱</aquamarine>╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╭╮
-╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱┃┃
-╭╮╭╮╭┳━━┫╰━┳━━┳━┳━━┫╰━┳━━╮
-┃╰╯╰╯┃┃━┫╭╮┃╭╮┃╭┫╭╮┃╭╮┃┃━┫
-╰╮╭╮╭┫┃━┫╰╯┃╰╯┃┃┃╰╯┃╰╯┃┃━┫
-<skyblue>╱</skyblue>╰╯╰╯╰━━┻━━┫╭━┻╯╰━━┻━━┻━━╯
-╱╱╱╱╱╱╱╱╱╱╱┃┃
-╱╱╱╱╱╱╱╱╱╱╱<red>╰</red><seagreen>╯</seagreen>      {0}
-</b>""".format(__version__))
+
+<skyblue>────────</skyblue><green>╔╗</green><blue>─────────</blue><yellow>╔╗</yellow>
+<purple>────────</purple><cyan>║</cyan>║─────────║║
+╔╗╔╗╔╦══╣╚═╦══╦═╦══╣╚═╦══╗
+║╚╝╚╝║║═╣╔╗║╔╗║╔╣╔╗║╔╗║║═╣
+╚╗╔╗╔╣║═╣╚╝║╚╝║║║╚╝║╚╝║║═╣
+─╚╝╚╝╚══╩══╣╔═╩╝╚══╩══╩══╝
+───────────║║
+───────────╚╝
+""")
 
 
 class EmptyReportManager:
@@ -109,10 +101,17 @@ class Controller:
             output
             ):
 
-        global VERSION
+        from quo.console.console import Console
 
-        content = Window(
-                    FormattedTextControl(Text(f"{banner}")),wrap_lines=True)
+        console = Console()
+        global VERSION
+        from quo import print as print_
+        from quo import container
+        from quo.layout import FormattedTextControl, Window
+        from quo.text import Text
+
+        content = Window(FormattedTextControl(Text(f"{banner}")),align="center")
+
 
         #using the return statement in this context doesnt return the desired output
         container(content)
@@ -318,13 +317,19 @@ class Controller:
         except KeyboardInterrupt:
             print("\n")
             console.bar("Operation canceled by user")
+           # self.output.error("\nCanceled by the user")
             exit(0)
 
         finally:
             self.error_log.close()
 
-        print("\n")
+        from quo.console import Console
+
+
+        console = Console()
         console.bar("Task Completed🎉🎊")
+
+        self.output.warning("\nTask Completed")
 
     # Print webprobe  metadata (threads, HTTP method, ...)
     def print_config(self):
@@ -618,15 +623,28 @@ class Controller:
     # Preparation between subdirectory scans
     def prepare(self):
         while not self.directories.empty():
+            from quo import print as print_
+            from quo.console import Console
+            from quo.layout import FormattedTextControl, Window
+            from quo.text import Text
+           # content = Window(FormattedTextControl(f"{bann}", style="fgyellow bg:blue bold"), align="center")
+     # return container(content)
+
+            con_ = Console()
             gc.collect()
             self.current_job += 1
             self.index = 0
             self.current_directory = self.directories.get()
-            with console.spin():
+            with con_.spin():
                 time.sleep(2)
                 content = Window(FormattedTextControl(Text("<b><red>» </red><cyan>[{1}]</cyan></b><i>Start probing: {0}</i>".format(self.current_directory, time.strftime("%H:%M:%S")))))
-                container(content)
-    
+               # return container(content)
+               #print_(banner)
+                #self.output.warning(
+                #"[{1}] Starting: {0}".format(
+                   # self.current_directory, time.strftime("%H:%M:%S")
+              #  )
+           # )
                 self.fuzzer.requester.base_path = self.output.base_path = self.base_path + self.current_directory
                 self.fuzzer.start()
                 self.process_paths()

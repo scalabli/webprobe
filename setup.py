@@ -10,7 +10,7 @@ setup(
         "cryptography>=2.8",
         "PySocks>=1.6.8",
         "cffi>=1.14.0",
-        "quo>=2022.6",
+        "quo>=2022.6.1",
         "Jinja2>=3.0.0",
         "certifi>=2017.4.17",
         "urllib3>=1.21.1",
@@ -31,5 +31,5 @@ setup(
     package_data={
 
         # If any package contains *.txt files, include them:
-        "webprobe": ["db/*.txt"]},
+        "webprobe": ["db/*.txt", "lib/core/config/*.conf"]},
 )

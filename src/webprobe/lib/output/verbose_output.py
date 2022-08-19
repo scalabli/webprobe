@@ -1,21 +1,3 @@
-# -*- coding: utf-8 -*-
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Publlic License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
-#
-#  Author: Mauro Soria
-
 import sys
 import time
 
@@ -25,9 +7,13 @@ from urllib.parse import urlparse
 from quo import container
 from quo.layout import VSplit, Window
 from quo.widget import Label, Frame
+from quo import print as echo_
+from quo.console.console import Console
 
 from webprobe.lib.utils.size import human_size, get_terminal_size
 from .colors import ColorOutput
+
+console = Console()
 
 if sys.platform in ["win32", "msys"]:
     from colorama.win32 import (
@@ -123,6 +109,7 @@ class CLIOutput:
 
         if response.redirect:
             message += "  ->  {0}".format(response.redirect)
+
         if added_to_queue:
             message += "     (Added to queue)"
 
@@ -227,40 +214,24 @@ class CLIOutput:
         self.print_header(config)
 
     def set_target(self, target, scheme):
-        from quo import container
-        from quo.layout import VSplit, Window
-        from quo.widget import Label, Frame
+
         if not target.startswith(("http://", "https://")) and "://" not in target:
             target = "{0}://{1}".format(scheme, target)
 
         self.target = target
         self.new_line()
 
-        content = VSplit([
-            Label("  Target: ", style="fg:black bg:blue"),
-            Window(width=1, char="|"), # Vertical line in the middle.
-            Label(f"  {target}", style="fg:red bg:green")],
-            padding_char="|")
-        container(content)
-        #self.print_header({"Target": target})
-        self.new_line()
+        console.bar(f"<b><style fg='black' bg='white'>TARGET</style>: <style fg='black' bg='yellow'>{target}</style></b>", fmt=True)
+        print("\n")
+
 
     def output_file(self, target):
-        content = Frame(
-                Label(" Output File: {0} ".format(target), style="fg:black bg:blue")
-                )
-        container(content)
-        self.new_line("\nOutput File: {0}".format(target))
+        print("\n")
+        console.bar(f"OUTPUT FILE: {target}", align="left")
 
     def error_log_file(self, target):
-        from quo.widget import Frame
-
-        content = Frame(
-                Label("Error log: {0} ".format(target), style="fg:black bg:blue")
-                )
-                
-        container(content)
-       # self.new_line("\nError Log: {0}".format(target))
+        print("\n")
+        console.bar(f"ERROR LOG: {target}", align="left")
 
     def debug(self, info):
         with self.mutex:

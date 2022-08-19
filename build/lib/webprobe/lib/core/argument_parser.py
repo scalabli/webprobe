@@ -1,26 +1,9 @@
-# -*- coding: utf-8 -*-
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
-#
-#  Author: Mauro Soria
-
 import sys,os
 from pathlib import Path
 
 from optparse import OptionParser, OptionGroup
 
+from quo.shortcuts.utils import print as echo_
 from webprobe.lib.parse.configparser import ConfigParser
 from webprobe.lib.parse.headers import HeadersParser
 from webprobe.lib.utils.file import File
@@ -28,7 +11,6 @@ from webprobe.lib.utils.file import FileUtils
 from webprobe.lib.utils.fmt import uniq
 from webprobe.lib.utils.range import get_range
 from webprobe.lib.utils.ip import iprange
-
 
 class ArgumentParser:
     def __init__(self, script_path):
@@ -60,14 +42,12 @@ class ArgumentParser:
             self.raw_file = options.raw_file
 
         if not len(self.url_list):
-            from quo import print as echo_
             echo_("<red>»</red> <cyan>URL target is missing, try using -u [url]</cyan>")
             exit(1)
 
         self.url_list = uniq(self.url_list)
 
         if not options.extensions and not options.no_extension:
-            from quo import print as echo_
             echo_("<style bg='yellow' fg='black'>WARNING:</style> No extension was specified!")
 
         if options.no_extension:
@@ -105,7 +85,7 @@ class ArgumentParser:
                     HeadersParser(file.read()).headers
                 )
             except Exception as e:
-                print("Error in headers file: " + str(e))
+                echo_("<b><red>Error in headers file: </red></b>" + str(e))
                 exit(1)
 
         if options.headers:
@@ -213,7 +193,6 @@ class ArgumentParser:
         if options.wordlist:
             self.wordlist = uniq([wordlist.strip() for wordlist in options.wordlist.split(",")])
         else:
-            from quo import print as echo_
             echo_("<seagreen>No wordlist was provided, try using -w [wordlist]</seagreen>")
             exit(1)
 
@@ -337,8 +316,13 @@ class ArgumentParser:
             return file
 
     def parse_config(self):
+        from pathlib import Path
+
+        # load config file
+
+        config_pat = Path(__file__).parent / "config/default.conf"
         config = ConfigParser()
-        config_path = FileUtils.build_path(self.script_path, "/etc/webprobe/default.conf")
+        config_path = FileUtils.build_path(self.script_path, config_pat)
         config.read(config_path)
 
         # Mandatory
@@ -423,26 +407,20 @@ class ArgumentParser:
         self.exit_on_error = config.safe_getboolean("connection", "exit-on-error", False)
 
     def parse_arguments(self):
-        import time
-        from quo.color import ColorDepth
-        from quo.progress import formatters, ProgressBar
+        from quo.console.console import Console
+        from webprobe import __version__
 
-        custom_formatters = [
-                formatters.Rainbow(formatters.Bar())
-                ]
-        color_depth = ColorDepth.eight_bit
+        console = Console()
 
-        with ProgressBar(
-                color_depth=color_depth, 
-                formatters=custom_formatters
-                ) as pb:
-            for i in pb(range(100)):
-                time.sleep(0.01)
+        console.rule(animated=True)
 
         usage = "Usage: %prog [-u|--url] target [-e|--extensions] extensions [options]"
-        parser = OptionParser(usage, version="webprobe v2022.1",
-                              epilog="""
-You can change the webprobe default configurations (default extensions, timeout, wordlist location, ...) by editing the "/etc/webprobe/default.conf" file. More information at https://github.com/scalabli/webprobe.""")
+        parser = OptionParser(
+                usage,
+                version="webprobe "+__version__,
+                epilog="""
+                You can change the webprobe default configurations (default extensions, timeout, wordlist location, ...) by editing the "/etc/webprobe/default.conf" file. More information at https://github.com/scalabli/webprobe."""
+                )
 
         # Mandatory arguments
         mandatory = OptionGroup(parser, "Mandatory")
@@ -577,7 +555,20 @@ You can change the webprobe default configurations (default extensions, timeout,
 
         # Report Settings
         reports = OptionGroup(parser, "Reports")
-        reports.add_option("-o", "--output", action="store", dest="output_file", default=None, metavar="FILE", help="Output file")
+
+        # set the directory to /home/${user}/.webprobe
+        homePath = (str(Path.home()))
+
+        reportsPath = homePath+"/.webprobe/reports/"
+        reports.add_option(
+                "-o",
+                "--output",
+                action="store", 
+                dest="output_file", 
+                default=None, 
+                metavar="FILE", 
+                help="Output file"
+                )
         reports.add_option("--format", action="store", dest="output_format", default=self.output_format, metavar="FORMAT",
                            help="Report format (Available: simple, plain, json, xml, md, csv, html)")
 

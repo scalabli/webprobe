@@ -30,6 +30,7 @@ src/webprobe/lib/core/path.py
 src/webprobe/lib/core/raw.py
 src/webprobe/lib/core/report_manager.py
 src/webprobe/lib/core/scanner.py
+src/webprobe/lib/core/config/default.conf
 src/webprobe/lib/output/__init__.py
 src/webprobe/lib/output/colors.py
 src/webprobe/lib/output/silent_output.py

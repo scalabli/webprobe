@@ -82,6 +82,7 @@ class Requester:
             try:
                 self.ip = socket.gethostbyname(self.host)
             except socket.gaierror:
+                print("jj")
                 # Check if hostname resolves to IPv6 address only
                 try:
                     self.ip = socket.gethostbyname(self.host, None, socket.AF_INET6)

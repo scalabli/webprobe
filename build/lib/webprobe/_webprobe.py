@@ -40,7 +40,7 @@ from webprobe.lib.output.verbose_output import CLIOutput
 from webprobe.lib.output.silent_output import PrintOutput
 
 
-class Program(object):
+class Program:
     def __init__(self):
         self.script_path = os.path.dirname(os.path.realpath(__file__))
 

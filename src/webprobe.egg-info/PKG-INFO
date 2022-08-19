@@ -15,7 +15,7 @@ Project-URL: Source Code, https://github.com/scalabli/webprobe
 Project-URL: Issue Tracker, https://github.com/scalabli/webprobe/issues/
 Project-URL: Twitter, https://twitter.com/scalabli
 Project-URL: Chat, https://gitter.im/scalabli
-Keywords: infosec,bug bount,pentesting,security
+Keywords: infosec,bug bounty,pentesting,security
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Developers
 Classifier: Environment :: Console
@@ -48,7 +48,9 @@ This CLI brute forces directories and files in webservers.
 
 Some common examples on how to use webprobe.
 
-:NOTE: If you need to see a list of all options, just use the **-h** argument.
+:NOTE: If you need to see a list of all options, just use the **-h** argument
+
+To use multiple wordlists, you can separate your wordlists with commas. Example: `wordlist1.txt,wordlist2.txt`
 
 ### Simple usage
 
@@ -70,7 +72,38 @@ o/wordlist
 
 ```
 
+## Pausing progress
 
+You can pause the scanning progress with CTRL+C  from here, you can save the progress (and continue later), skip the current target, or skip the current sub-directory.
+
+## Recursion
+- Brutforcing recursively can be achieved using `-r` or `--recursive` flag.
+
+For example, if webprobe finds `admin/`, it will brute-force `admin/* ` (`*` is where it brute forces).
+
+```python
+
+webprobe -e php,html,js -u https://example.com -r
+
+```
+
+- You can set the max recursion depth with `--recursion-depth` and status codes to recurse with `--recursion-status`
+
+```python
+
+webprobe -e php,html,js -u https://example.com -r --recursion-depth 3 --recursion-status 200-399
+
+```
+You can brute force recursively all found paths, not just paths end with `/` using `--force-recursive` flag.
+
+
+  - **Deep recursive**: Recursive brute-force all depths of a path (`a/b/c` =>
+ add `a/`, `a/b/`)
+
+- If there are sub-directories that you do not want to brute-force recursively
+, use `--exclude-subdirs`                                                     
+```
+python3 dirsearch.py -e php,html,js -u https://target -r --exclude-subdirs image/,media/,css/                                                               ```
 
 ## License📑
 
