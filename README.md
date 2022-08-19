@@ -88,7 +88,7 @@ webprobe -e php,html,js -u https://example.com -r --exclude-subdirs image/,media
 Thread number (`-t | --threads`) reflects the number of separated brute force processes. The bigger the thread number, the faster webprobe runs. By default, the number of threads is 25, but you can increase it if you want to speed up the progress.
 
 However, the speed still depends on the response time of the server.
-:NOTE: keep the threads number within a reasonable range because it can cause DoS (Denial of Service).
+:bulb: keep the threads number within a reasonable range because it can cause DoS (Denial of Service).
 
 ```python
 
@@ -185,7 +185,7 @@ webprobe -u https://example.com --header-list rate-limit-bypasses.txt
 
 ## Reports
 Supported report formats are: **simple**, **plain**, **json**, **xml**, **md**, **csv**,  **html**, **sqlite**
-:NOTE: We will be adding **yaml** soon
+:bulb: We will be adding `yaml` soon
 
 ```python
  webprobe -e php -l URLs.txt --format plain -o report.txt
