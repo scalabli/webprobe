@@ -18,7 +18,9 @@ This CLI brute forces directories and files in webservers.
 
 Some common examples on how to use webprobe.
 
-:NOTE: If you need to see a list of all options, just use the **-h** argument.
+:NOTE: If you need to see a list of all options, just use the **-h** argument
+
+To use multiple wordlists, you can separate your wordlists with commas. Example: `wordlist1.txt,wordlist2.txt`
 
 ### Simple usage
 
