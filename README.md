@@ -34,20 +34,18 @@ To use multiple wordlists, you can separate your wordlists with commas. Example:
 
 ```python
 
-webprobe -u https://target.com
+webprobe -u https://example.com
 
 ```
 
 ```python
 
-webprobe -e php,html,js -u https://target.com
+webprobe -e php,html,js -u https://example.com
 
 ```
 
-```
-webprobe -e php,html,js -u https://target.com -w /path/t
-o/wordlist
-
+```python
+webprobe -e php,html,js -u https://exaple.com -w /path/to/wordlist
 ```
 
 ## Pausing progress
