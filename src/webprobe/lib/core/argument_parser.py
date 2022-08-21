@@ -412,7 +412,7 @@ class ArgumentParser:
 
         console = Console()
 
-        console.rule(animated=True)
+        console.rule(multicolored=True)
 
         usage = "Usage: %prog [-u|--url] target [-e|--extensions] extensions [options]"
         parser = OptionParser(
