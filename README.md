@@ -7,7 +7,7 @@
 [![Logo](https://raw.githubusercontent.com/scalabli/webprobe/main/images/webprobe.png)](https://github.com/scalabli/webprobe)
 
 # webprobe
-Nifty and sophisticated web path scanner
+Nifty and sophisticated web path scanner for security researchers
 
 A sophisticated web path scanner designed for the most descerning bug bounty hunters.
 
